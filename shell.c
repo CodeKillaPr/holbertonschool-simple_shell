@@ -9,7 +9,7 @@ void shell_loop(void)
 	char **args;
 	int status;
 
-	do{
+	do {
 		printf("$ ");
 		line = read_line();
 		args = parse_line(line);
@@ -103,7 +103,7 @@ int launch_process(char **args)
 	else
 	{
 
-		do{
+		do {
 			wpid = waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
