@@ -1,18 +1,30 @@
-#ifndef MAIN_H
-#define MAIN_H
-#include <unistd.h>
+#ifndef _MAIN_H_
+#define _MAIN_H_
+
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <stddef.h>
-#include <sys/wait.h>
+#include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
-#include <sys/types.h>
-#include <errno.h>
 #include <sys/stat.h>
-#include <stdarg.h>
+#include <sys/wait.h>
+#include <limits.h>
+
 extern char **environ;
 
-int _putchar(char c);
+/* our own function prototypes */
+void prompt(void);
+char *read_line(void);
+char **tokenize_input(char *line);
+int execute_child(char **tokens);
 
-#endif
+/* function prototypes for built-ins */
+void display_env(void);
+
+/* function prototypes for implementations */
+int _strlen(char *s);
+int _strcmp(char *s1, char *s2);
+char *_getenv(const char *name);
+void free_grid(char **grid);
+
+#endif /*_MAIN_H_*/
