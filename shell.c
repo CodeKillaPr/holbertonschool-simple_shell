@@ -1,58 +1,144 @@
-#include "main.h"
+#include "shell.h"
 
 /**
- * main - simple shell
- *
- * Return: 1
+ * shell_loop - Function to start the shell loop
  */
-int main(void)
+void shell_loop(void)
 {
-	char *user_input;
-	char **tokens;
-	int x;
+	char *line;
+	char **args;
+	int status;
 
-	while (1)
-	{
-		/*prompt*/
-		prompt();
+	do{
+		printf("$ ");
+		line = read_line();
+		args = parse_line(line);
+		status = execute_command(args);
 
-		/*receives user input and stores it in user_input*/
-		user_input = read_line();
-
-		/* if user types enter, continue prompt */
-		if (user_input[0] == '\0')
-		{
-			free(user_input);
-			continue;
-		}
-
-		/* tokenizes user_input */
-		tokens = tokenize_input(user_input);
-
-		/* if I was given a normal command */
-		if (_strcmp(tokens[0], "env") != 0)
-			x = execute_child(tokens);
-
-		if (x != 0)
-		{
-			free(user_input);
-			exit(EXIT_FAILURE);
-		}
-
-		free(tokens);
-		free(user_input);
-	}
-	return (0);
+		free(line);
+		free(args);
+	} while (status);
 }
 
 /**
- * prompt - displays prompt and waits for input
+ * read_line - Function to read a line of input from stdin
  *
- * Return: VOID
+ * Return: The input line
  */
-void prompt(void)
+char *read_line(void)
 {
-	char *prompt = "simple_shell ";
+	char *line = NULL;
+	ssize_t bufsize = 0;
 
-	write(STDOUT_FILENO, prompt, _strlen(prompt));
+	getline(&line, (size_t *)&bufsize, stdin);
+
+	return (line);
+}
+
+/**
+ * parse_line - Function to parse a line into tokens
+ *
+ * @line: The input line
+ * Return: Array of tokens
+ */
+char **parse_line(char *line)
+{
+	int bufsize = BUFSIZE, position = 0;
+	char **tokens = malloc(bufsize * sizeof(char *));
+	char *token;
+
+	if (!tokens)
+	{
+		fprintf(stderr, "Allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	token = strtok(line, DELIMITER);
+	while (token != NULL)
+	{
+		tokens[position] = token;
+		position++;
+
+		if (position >= bufsize)
+		{
+			bufsize += BUFSIZE;
+			tokens = realloc(tokens, bufsize * sizeof(char *));
+			if (!tokens)
+			{
+				fprintf(stderr, "Allocation error\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+
+		token = strtok(NULL, DELIMITER);
+	}
+	tokens[position] = NULL;
+	return (tokens);
+}
+
+/**
+ * launch_process - Function to launch a process
+ *
+ * @args: Array of arguments for the process
+ * Return: 1 if successful
+ */
+int launch_process(char **args)
+{
+	pid_t pid, wpid;
+	int status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (execvp(args[0], args) == -1)
+		{
+			perror("shell");
+		}
+		exit(EXIT_FAILURE);
+	}
+	else if (pid < 0)
+	{
+		perror("shell");
+	}
+	else
+	{
+
+		do{
+			wpid = waitpid(pid, &status, WUNTRACED);
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
+
+	return (1);
+}
+
+/**
+ * execute_command - Function to execute a command
+ *
+ * @args: Array of arguments for the command
+ * Return: 0 if the command is "exit", 1 otherwise
+ */
+int execute_command(char **args)
+{
+	if (args[0] == NULL)
+	{
+		return (1);
+	}
+
+	if (strcmp(args[0], "exit") == 0)
+	{
+		return (0);
+	}
+
+	if (strcmp(args[0], "env") == 0)
+	{
+		char **env = environ;
+
+		while (*env)
+		{
+			printf("%s\n", *env++);
+		}
+		return (1);
+	}
+
+	return (launch_process(args));
 }
