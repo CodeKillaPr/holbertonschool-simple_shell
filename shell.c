@@ -1,7 +1,8 @@
 #include "shell.h"
 
 /**
- * shell_loop - Function to start the shell loop
+ * shell_loop - Función para iniciar el bucle de la shell
+ * Return: nada
  */
 void shell_loop(void)
 {
@@ -10,7 +11,7 @@ void shell_loop(void)
 	int status;
 
 	do {
-		printf("simple_shell ");
+		printf("simple_shell$ ");
 		line = read_line();
 		args = parse_line(line);
 		status = execute_command(args);
@@ -21,35 +22,34 @@ void shell_loop(void)
 }
 
 /**
- * read_line - Function to read a line of input from stdin
- *
- * Return: The input line
+ * read_line - Función para leer una línea de entrada
+ * Return: Línea de entrada
  */
 char *read_line(void)
 {
 	char *line = NULL;
-	ssize_t bufsize = 0;
+	size_t bufsize = 0;
 
-	getline(&line, (size_t *)&bufsize, stdin);
+	getline(&line, &bufsize, stdin);
 
 	return (line);
 }
 
 /**
- * parse_line - Function to parse a line into tokens
- *
- * @line: The input line
- * Return: Array of tokens
+ * parse_line - Función para dividir una línea en tokens
+ * @line: Línea de entrada
+ * Return: Array de tokens
  */
 char **parse_line(char *line)
 {
-	int bufsize = BUFSIZE, position = 0;
+	int bufsize = BUFSIZE;
+	int position = 0;
 	char **tokens = malloc(bufsize * sizeof(char *));
 	char *token;
 
 	if (!tokens)
 	{
-		fprintf(stderr, "Allocation error\n");
+		fprintf(stderr, "Error de asignación de memoria\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -65,7 +65,7 @@ char **parse_line(char *line)
 			tokens = realloc(tokens, bufsize * sizeof(char *));
 			if (!tokens)
 			{
-				fprintf(stderr, "Allocation error\n");
+				fprintf(stderr, "Error de asignación de memoria\n");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -77,45 +77,9 @@ char **parse_line(char *line)
 }
 
 /**
- * launch_process - Function to launch a process
- *
- * @args: Array of arguments for the process
- * Return: 1 if successful
- */
-int launch_process(char **args)
-{
-	pid_t pid;
-	int status;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		if (execvp(args[0], args) == -1)
-		{
-			perror("shell");
-		}
-		exit(EXIT_FAILURE);
-	}
-	else if (pid < 0)
-	{
-		perror("shell");
-	}
-	else
-	{
-
-		do {
-			waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
-
-	return (1);
-}
-
-/**
- * execute_command - Function to execute a command
- *
- * @args: Array of arguments for the command
- * Return: 0 if the command is "exit", 1 otherwise
+ * execute_command - Función para ejecutar un comando
+ * @args: Array de tokens
+ * Return: 1 si el comando se ejecuta correctamente, 0 si se sale
  */
 int execute_command(char **args)
 {
@@ -141,4 +105,40 @@ int execute_command(char **args)
 	}
 
 	return (launch_process(args));
+}
+
+/**
+ * launch_process - Función para lanzar un proceso
+ * @args: Array de tokens
+ * Return: 1 si el proceso se lanza correctamente
+ */
+int launch_process(char **args)
+{
+	pid_t pid;
+	int status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+
+		if (execvp(args[0], args) == -1)
+		{
+			perror("shell");
+		}
+		exit(EXIT_FAILURE);
+	}
+	else if (pid < 0)
+	{
+
+		perror("shell");
+	}
+	else
+	{
+
+		do {
+			waitpid(pid, &status, WUNTRACED);
+		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
+
+	return (1);
 }
