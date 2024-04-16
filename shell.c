@@ -10,7 +10,7 @@ void shell_loop(void)
 	int status;
 
 	do {
-		printf("$ ");
+		printf("simple_shell ");
 		line = read_line();
 		args = parse_line(line);
 		status = execute_command(args);
@@ -84,7 +84,7 @@ char **parse_line(char *line)
  */
 int launch_process(char **args)
 {
-	pid_t pid, wpid;
+	pid_t pid;
 	int status;
 
 	pid = fork();
@@ -104,7 +104,7 @@ int launch_process(char **args)
 	{
 
 		do {
-			wpid = waitpid(pid, &status, WUNTRACED);
+			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 
