@@ -3,7 +3,7 @@
  * main - Entry point
  * Return: exit success
  */
-int main(int argc, char **argv)
+int main(void)
 {
 	shell_loop();
 	return EXIT_SUCCESS;

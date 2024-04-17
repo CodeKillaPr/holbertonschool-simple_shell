@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
@@ -26,5 +27,6 @@ char **parse_line(char *line);
 int launch_process(char **args);
 int execute_command(char **args);
 void handle_sigint(int sig);
+
 
 #endif /* SHELL_H */
