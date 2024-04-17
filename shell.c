@@ -96,25 +96,28 @@ int launch_process(char **args)
 	pid_t pid;
 	int status;
 
+	if (strcmp(args[0], "exit") == 0)
+	{
+		exit(EXIT_SUCCESS);
+	}
+
 	pid = fork();
 	if (pid == 0)
 	{
-
 		if (execvp(args[0], args) == -1)
 		{
-			perror("shell");
+			perror("simple_shell$");
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
-
-		perror("shell");
+		perror("simple_shell$");
 	}
 	else
 	{
-
-		do {
+		do
+		{
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}

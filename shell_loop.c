@@ -6,31 +6,25 @@
  */
 void shell_loop(void)
 {
-	char command[MAX_COMMAND_LENGTH];
+	char *line;
 	char **args;
+	int status;
 
-	while (1)
+	do
 	{
 		printf("simple_shell$ ");
-		if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
+		line = read_line();
+		args = parse_line(line);
+		if (args != NULL && args[0] != NULL)
 		{
-			if (feof(stdin))
-			{
-				printf("\n");
-				break;
-			}
-			perror("fgets");
-			exit(EXIT_FAILURE);
+			status = execute_command(args);
+		}
+		else
+		{
+			status = 1;
 		}
 
-		args = parse_line(command);
-		if (args == NULL)
-		{
-			continue;
-		}
-
-		execute_command(args);
-
+		free(line);
 		free(args);
-	}
+	} while (status);
 }
