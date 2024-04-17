@@ -91,12 +91,9 @@ char **parse_line(char *line)
  */
 int execute_command(char **args)
 {
-<<<<<<< HEAD
-=======
 
 	int result = launch_process(args);
 
->>>>>>> Nelson
 	if (args[0] == NULL)
 	{
 		return (1);
@@ -107,9 +104,6 @@ int execute_command(char **args)
 		return (0);
 	}
 
-<<<<<<< HEAD
-	return (launch_process(args));
-=======
 	if (strcmp(args[0], "env") == 0)
 	{
 		char **env = environ;
@@ -122,7 +116,6 @@ int execute_command(char **args)
 	}
 
 	return result;
->>>>>>> Nelson
 }
 
 /**
@@ -145,19 +138,9 @@ int launch_process(char **args)
 	{
 		if (execve(args[0], args, environ) == -1)
 		{
-<<<<<<< HEAD
-			perror("simple_shell");
-		}
-		exit(EXIT_FAILURE);
-	}
-	else if (pid < 0)
-	{
-		perror("simple_shell");
-=======
 			perror("execvp");
 			exit(EXIT_FAILURE);
 		}
->>>>>>> Nelson
 	}
 	else
 	{
