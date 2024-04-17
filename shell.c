@@ -3,8 +3,13 @@
 char *last_command = NULL; // To store the last command for history feature
 
 /**
+<<<<<<< HEAD
  * read_line - Function to read a line of input
  * Return: Line of input or NULL if EOF is reached
+=======
+ * read_line - Función para leer una línea de entrada
+ * Return: Línea de entrada o NULL si se llega al final del archivo
+>>>>>>> ff3c8e517fe36bb8d4e916f4296c53b90388b9da
  */
 char *read_line(void)
 {
@@ -69,7 +74,15 @@ int execute_command(char **args)
 {
 	if (args[0] == NULL) return 1; // Empty command
 
+<<<<<<< HEAD
 	if (strcmp(args[0], "exit") == 0) return 0;
+=======
+	if (strcmp(args[0], "/bin/ls") == 0)
+	{
+		args[0] = "ls";
+	}
+
+>>>>>>> ff3c8e517fe36bb8d4e916f4296c53b90388b9da
 	if (strcmp(args[0], "env") == 0)
 	{
 		for (char **env = environ; *env; env++)
