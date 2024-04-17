@@ -26,11 +26,11 @@ void shell_loop(void)
 		args = parse_line(command);
 		if (args == NULL)
 		{
-			continue; // Si hay un error en parse_line, continuamos con la próxima iteración
+			continue;
 		}
 
 		execute_command(args);
 
-		free(args); // Liberamos solo el arreglo de argumentos, no command
+		free(args);
 	}
 }

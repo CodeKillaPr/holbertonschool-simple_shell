@@ -114,8 +114,7 @@ int launch_process(char **args)
 	else
 	{
 
-		do
-		{
+		do {
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
