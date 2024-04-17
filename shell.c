@@ -56,7 +56,7 @@ char **parse_line(char *line)
 		token = strtok(NULL, DELIMITER);
 	}
 	tokens[position] = NULL;
-	return (tokens);
+	return tokens;
 }
 
 /**
@@ -66,7 +66,7 @@ char **parse_line(char *line)
  */
 int execute_command(char **args)
 {
-	char *command_path;
+
 	int result = launch_process(args);
 
 	if (args[0] == NULL)
@@ -90,15 +90,6 @@ int execute_command(char **args)
 		return (1);
 	}
 
-	command_path = find_command(args[0]);
-
-	if (command_path == NULL)
-	{
-		fprintf(stderr, "Comando no encontrado: %s\n", args[0]);
-		return (1);
-	}
-	free(command_path);
-
 	return result;
 }
 
@@ -118,25 +109,30 @@ int launch_process(char **args)
 	}
 
 	pid = fork();
-	if (pid == 0)
+	if (pid == -1)
+	{
+		perror("fork");
+		return -1;
+	}
+	else if (pid == 0)
 	{
 		if (execvp(args[0], args) == -1)
 		{
-			perror("simple_shell ");
+			perror("execvp");
+			exit(EXIT_FAILURE);
 		}
-		exit(EXIT_FAILURE);
-	}
-	else if (pid < 0)
-	{
-		perror("simple_shell ");
 	}
 	else
 	{
 		do
 		{
-			waitpid(pid, &status, WUNTRACED);
+			if (waitpid(pid, &status, WUNTRACED) == -1)
+			{
+				perror("waitpid");
+				return -1;
+			}
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 
-	return (1);
+	return 0;
 }
