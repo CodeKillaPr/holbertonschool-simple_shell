@@ -14,6 +14,10 @@ extern char **environ;
 #define TOK_BUFSIZE 64
 #define DELIMITER " \t\r\n\a"
 
+#ifdef IGNORE_FPRINTF
+#define fprintf(fp, ...) ((void)0)
+#endif
+
 /* Function declarations */
 void shell_loop(void);
 char *read_line(void);
