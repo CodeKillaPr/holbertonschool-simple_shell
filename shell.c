@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * read_line - Función para leer una línea de entrada
  * Return: Línea de entrada o NULL si se llega al final del archivo
