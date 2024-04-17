@@ -8,6 +8,7 @@ void shell_loop(void)
 {
 	char *line;
 	char **args;
+	int status;
 
 	while (1)
 	{
@@ -26,13 +27,13 @@ void shell_loop(void)
 			continue;
 		}
 
-		if (execute_command(args) == 0)
-		{
-			free(line);
-			break;
-		}
-
+		status = execute_command(args);
 		free(line);
 		free(args);
+
+		if (status == 0)
+		{
+			break;
+		}
 	}
 }

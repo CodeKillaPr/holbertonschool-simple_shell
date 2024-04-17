@@ -10,7 +10,7 @@
 
 extern char **environ;
 
-#define BUFSIZE 1024
+#define BUFSIZE 64
 #define MAX_COMMAND_LENGTH 1024
 #define TOK_BUFSIZE 64
 #define DELIMITER " \t\r\n\a"

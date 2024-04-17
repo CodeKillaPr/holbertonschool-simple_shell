@@ -1,10 +1,10 @@
 #include "shell.h"
 /**
  * main - Entry point
- * Return: 0 on success
+ * Return: exit success
  */
-int main(void)
+int main(int argc, char **argv)
 {
 	shell_loop();
-	return (0);
+	return EXIT_SUCCESS;
 }
