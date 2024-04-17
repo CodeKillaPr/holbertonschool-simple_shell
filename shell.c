@@ -76,6 +76,11 @@ int execute_command(char **args)
 		return (0);
 	}
 
+	if (strcmp(args[0], "/bin/ls") == 0)
+	{
+		args[0] = "ls";
+	}
+
 	if (strcmp(args[0], "env") == 0)
 	{
 		char **env = environ;
