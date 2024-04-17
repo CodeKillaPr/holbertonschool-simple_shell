@@ -66,6 +66,9 @@ char **parse_line(char *line)
  */
 int execute_command(char **args)
 {
+	char *command_path;
+	int result = launch_process(args);
+
 	if (args[0] == NULL)
 	{
 		return (1);
@@ -74,11 +77,6 @@ int execute_command(char **args)
 	if (strcmp(args[0], "exit") == 0)
 	{
 		return (0);
-	}
-
-	if (strcmp(args[0], "/bin/ls") == 0)
-	{
-		args[0] = "ls";
 	}
 
 	if (strcmp(args[0], "env") == 0)
@@ -92,7 +90,16 @@ int execute_command(char **args)
 		return (1);
 	}
 
-	return (launch_process(args));
+	command_path = find_command(args[0]);
+
+	if (command_path == NULL)
+	{
+		fprintf(stderr, "Comando no encontrado: %s\n", args[0]);
+		return (1);
+	}
+	free(command_path);
+
+	return result;
 }
 
 /**
@@ -115,17 +122,18 @@ int launch_process(char **args)
 	{
 		if (execvp(args[0], args) == -1)
 		{
-			perror("simple_shell$");
+			perror("simple_shell ");
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
-		perror("simple_shell$");
+		perror("simple_shell ");
 	}
 	else
 	{
-		do {
+		do
+		{
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}

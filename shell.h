@@ -26,5 +26,6 @@ char **parse_line(char *line);
 int launch_process(char **args);
 int execute_command(char **args);
 void handle_sigint(int sig);
+char *find_command(char *command);
 
 #endif /* SHELL_H */

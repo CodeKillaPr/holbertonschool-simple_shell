@@ -11,7 +11,7 @@ void shell_loop(void)
 
 	while (1)
 	{
-		printf("simple_shell$ ");
+		printf("simple_shell ");
 		line = read_line();
 		if (line == NULL)
 		{
