@@ -81,7 +81,7 @@ char **parse_line(char *line)
 		token = strtok(NULL, DELIMITER);
 	}
 	tokens[position] = NULL;
-	return (tokens);
+	return tokens;
 }
 
 /**
@@ -91,6 +91,12 @@ char **parse_line(char *line)
  */
 int execute_command(char **args)
 {
+<<<<<<< HEAD
+=======
+
+	int result = launch_process(args);
+
+>>>>>>> Nelson
 	if (args[0] == NULL)
 	{
 		return (1);
@@ -101,7 +107,22 @@ int execute_command(char **args)
 		return (0);
 	}
 
+<<<<<<< HEAD
 	return (launch_process(args));
+=======
+	if (strcmp(args[0], "env") == 0)
+	{
+		char **env = environ;
+
+		while (*env)
+		{
+			printf("%s\n", *env++);
+		}
+		return (1);
+	}
+
+	return result;
+>>>>>>> Nelson
 }
 
 /**
@@ -115,10 +136,16 @@ int launch_process(char **args)
 	int status;
 
 	pid = fork();
-	if (pid == 0)
+	if (pid == -1)
+	{
+		perror("fork");
+		return -1;
+	}
+	else if (pid == 0)
 	{
 		if (execve(args[0], args, environ) == -1)
 		{
+<<<<<<< HEAD
 			perror("simple_shell");
 		}
 		exit(EXIT_FAILURE);
@@ -126,14 +153,23 @@ int launch_process(char **args)
 	else if (pid < 0)
 	{
 		perror("simple_shell");
+=======
+			perror("execvp");
+			exit(EXIT_FAILURE);
+		}
+>>>>>>> Nelson
 	}
 	else
 	{
 		do
 		{
-			waitpid(pid, &status, WUNTRACED);
+			if (waitpid(pid, &status, WUNTRACED) == -1)
+			{
+				perror("waitpid");
+				return -1;
+			}
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 
-	return (1);
+	return 0;
 }
