@@ -1,120 +1,121 @@
 #include "shell.h"
 
+char *last_command = NULL; // To store the last command for history feature
+
 /**
- * read_line - Función para leer una línea de entrada
- * Return: Línea de entrada
+ * read_line - Function to read a line of input
+ * Return: Line of input or NULL if EOF is reached
  */
 char *read_line(void)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
 
-	getline(&line, &bufsize, stdin);
+	if (getline(&line, &bufsize, stdin) == -1)
+	{
+		free(line);
+		return NULL;
+	}
 
-	return (line);
+	if (last_command) free(last_command);
+	last_command = strdup(line); // Update the last command
+
+	return line;
 }
 
 /**
- * parse_line - Función para dividir una línea en tokens
- * @line: Línea de entrada
- * Return: Array de tokens
+ * parse_line - Function to split a line into tokens
+ * @line: Line of input
+ * Return: Array of tokens
  */
 char **parse_line(char *line)
 {
-	int bufsize = BUFSIZE;
-	int position = 0;
+	int bufsize = TOK_BUFSIZE, position = 0;
 	char **tokens = malloc(bufsize * sizeof(char *));
 	char *token;
 
 	if (!tokens)
 	{
-		fprintf(stderr, "Error de asignación de memoria\n");
+		fprintf(stderr, "Memory allocation error\n");
 		exit(EXIT_FAILURE);
 	}
 
 	token = strtok(line, DELIMITER);
 	while (token != NULL)
 	{
-		tokens[position] = token;
-		position++;
-
+		tokens[position++] = token;
 		if (position >= bufsize)
 		{
-			bufsize += BUFSIZE;
+			bufsize += TOK_BUFSIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char *));
 			if (!tokens)
 			{
-				fprintf(stderr, "Error de asignación de memoria\n");
+				fprintf(stderr, "Memory allocation error\n");
 				exit(EXIT_FAILURE);
 			}
 		}
-
 		token = strtok(NULL, DELIMITER);
 	}
 	tokens[position] = NULL;
-	return (tokens);
+	return tokens;
 }
 
 /**
- * execute_command - Función para ejecutar un comando
- * @args: Array de tokens
- * Return: 1 si el comando se ejecuta correctamente, 0 si se sale
+ * execute_command - Function to execute a command
+ * @args: Array of tokens
+ * Return: 1 to continue the shell, 0 to exit
  */
 int execute_command(char **args)
 {
-	if (args[0] == NULL)
-	{
-		return (1);
-	}
+	if (args[0] == NULL) return 1; // Empty command
 
-	if (strcmp(args[0], "exit") == 0)
-	{
-		return (0);
-	}
-
+	if (strcmp(args[0], "exit") == 0) return 0;
 	if (strcmp(args[0], "env") == 0)
 	{
-		char **env = environ;
-
-		while (*env)
-		{
-			printf("%s\n", *env++);
-		}
-		return (1);
+		for (char **env = environ; *env; env++)
+			printf("%s\n", *env);
+		return 1;
+	}
+	if (strcmp(args[0], "cd") == 0)
+	{
+		if (args[1]) chdir(args[1]);
+		else fprintf(stderr, "Expected argument to \"cd\"\n");
+		return 1;
+	}
+	if (strcmp(args[0], "history") == 0)
+	{
+		if (last_command) printf("Last command: %s", last_command);
+		else printf("No history available.\n");
+		return 1;
 	}
 
-	return (launch_process(args));
+	return launch_process(args);
 }
 
 /**
- * launch_process - Función para lanzar un proceso
- * @args: Array de tokens
- * Return: 1 si el proceso se lanza correctamente
+ * launch_process - Function to launch a process
+ * @args: Array of tokens
+ * Return: 1 to continue the shell
  */
 int launch_process(char **args)
 {
 	pid_t pid;
 	int status;
 
-	if (strcmp(args[0], "exit") == 0)
-	{
-		exit(EXIT_SUCCESS);
-	}
-
 	pid = fork();
-	if (pid == 0)
+	if (pid == 0) // Child process
 	{
 		if (execvp(args[0], args) == -1)
 		{
-			perror("simple_shell$");
+			perror("Error");
+			exit(EXIT_FAILURE);
 		}
-		exit(EXIT_FAILURE);
 	}
-	else if (pid < 0)
+	else if (pid < 0) // Error forking
 	{
-		perror("simple_shell$");
+		perror("Error");
 	}
-	else
+	else // Parent process
 	{
 		do
 		{
@@ -122,5 +123,23 @@ int launch_process(char **args)
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 
-	return (1);
+	return 1;
+}
+
+/**
+ * handle_sigint - Signal handler for SIGINT
+ * @sig: Signal number
+ */
+void handle_sigint(int sig)
+{
+	printf("\nType 'exit' to close the shell\nsimple_shell$ ");
+	fflush(stdout);
+}
+
+/**
+ * shell_loop - Function to start the shell loop
+ */
+void shell_loop(void)
+{
+	signal(SIGINT, handle_sig
 }

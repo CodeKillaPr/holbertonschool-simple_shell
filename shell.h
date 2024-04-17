@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 extern char **environ;
 
@@ -20,5 +21,6 @@ char *read_line(void);
 char **parse_line(char *line);
 int launch_process(char **args);
 int execute_command(char **args);
+void handle_sigint(int sig);
 
 #endif /* SHELL_H */
