@@ -2,14 +2,18 @@
 
 /**
  * read_line - Función para leer una línea de entrada
- * Return: Línea de entrada
+ * Return: Línea de entrada o NULL si se llega al final del archivo
  */
 char *read_line(void)
 {
 	char *line = NULL;
 	size_t bufsize = 0;
 
-	getline(&line, &bufsize, stdin);
+	if (getline(&line, &bufsize, stdin) == -1)
+	{
+		free(line);
+		return NULL;
+	}
 
 	return (line);
 }

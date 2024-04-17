@@ -8,23 +8,31 @@ void shell_loop(void)
 {
 	char *line;
 	char **args;
-	int status;
 
-	do
+	while (1)
 	{
 		printf("simple_shell$ ");
 		line = read_line();
-		args = parse_line(line);
-		if (args != NULL && args[0] != NULL)
+		if (line == NULL)
 		{
-			status = execute_command(args);
+			printf("\n");
+			break;
 		}
-		else
+
+		args = parse_line(line);
+		if (args == NULL)
 		{
-			status = 1;
+			free(line);
+			continue;
+		}
+
+		if (execute_command(args) == 0)
+		{
+			free(line);
+			break;
 		}
 
 		free(line);
 		free(args);
-	} while (status);
+	}
 }
