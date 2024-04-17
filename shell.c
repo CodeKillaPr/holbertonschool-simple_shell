@@ -6,16 +6,43 @@
  */
 char *read_line(void)
 {
-	char *line = NULL;
-	size_t bufsize = 0;
+	int bufsize = BUFSIZE;
+	int position = 0;
+	char *buffer = malloc(sizeof(char) * bufsize);
+	int c;
 
-	if (getline(&line, &bufsize, stdin) == -1)
+	if (buffer == NULL)
 	{
-		free(line);
-		return (NULL);
+		fprintf(stderr, "Error de asignación de memoria\n");
+		exit(EXIT_FAILURE);
 	}
 
-	return (line);
+	while (1)
+	{
+		c = getchar();
+
+		if (c == EOF || c == '\n')
+		{
+			buffer[position] = '\0';
+			return buffer;
+		}
+		else
+		{
+			buffer[position] = c;
+		}
+		position++;
+
+		if (position >= bufsize)
+		{
+			bufsize += BUFSIZE;
+			buffer = realloc(buffer, bufsize);
+			if (buffer == NULL)
+			{
+				fprintf(stderr, "Error de asignación de memoria\n");
+				exit(EXIT_FAILURE);
+			}
+		}
+	}
 }
 
 /**
@@ -25,12 +52,11 @@ char *read_line(void)
  */
 char **parse_line(char *line)
 {
-	int bufsize = BUFSIZE;
-	int position = 0;
+	int bufsize = TOK_BUFSIZE, position = 0;
 	char **tokens = malloc(bufsize * sizeof(char *));
 	char *token;
 
-	if (!tokens)
+	if (tokens == NULL)
 	{
 		fprintf(stderr, "Error de asignación de memoria\n");
 		exit(EXIT_FAILURE);
@@ -44,9 +70,9 @@ char **parse_line(char *line)
 
 		if (position >= bufsize)
 		{
-			bufsize += BUFSIZE;
+			bufsize += TOK_BUFSIZE;
 			tokens = realloc(tokens, bufsize * sizeof(char *));
-			if (!tokens)
+			if (tokens == NULL)
 			{
 				fprintf(stderr, "Error de asignación de memoria\n");
 				exit(EXIT_FAILURE);
@@ -66,9 +92,6 @@ char **parse_line(char *line)
  */
 int execute_command(char **args)
 {
-	char *command_path;
-	int result = launch_process(args);
-
 	if (args[0] == NULL)
 	{
 		return (1);
@@ -79,27 +102,7 @@ int execute_command(char **args)
 		return (0);
 	}
 
-	if (strcmp(args[0], "env") == 0)
-	{
-		char **env = environ;
-
-		while (*env)
-		{
-			printf("%s\n", *env++);
-		}
-		return (1);
-	}
-
-	command_path = find_command(args[0]);
-
-	if (command_path == NULL)
-	{
-		fprintf(stderr, "Comando no encontrado: %s\n", args[0]);
-		return (1);
-	}
-	free(command_path);
-
-	return result;
+	return (launch_process(args));
 }
 
 /**
@@ -112,23 +115,18 @@ int launch_process(char **args)
 	pid_t pid;
 	int status;
 
-	if (strcmp(args[0], "exit") == 0)
-	{
-		exit(EXIT_SUCCESS);
-	}
-
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execvp(args[0], args) == -1)
+		if (execve(args[0], args, environ) == -1)
 		{
-			perror("simple_shell ");
+			perror("simple_shell");
 		}
 		exit(EXIT_FAILURE);
 	}
 	else if (pid < 0)
 	{
-		perror("simple_shell ");
+		perror("simple_shell");
 	}
 	else
 	{
