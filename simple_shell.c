@@ -54,7 +54,12 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream)
 	int i;
 
 	if (_strcmp(s, "exit") == 0)
-		exit(0);
+		return (2);
+	else
+	{
+		if (_strcmp(s, "exit") == 0)
+			exit(0);
+	}
 	if (_strcmp(s, "env") == 0)
 		return (_printenv());
 	token = strtok(s, " "), i = 0;
@@ -67,7 +72,6 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream)
 	/* Return status code */
 	return (call_command(cmd_arr));
 }
-
 /**
  * print_not_found - prints when cmd is not found in path
  *
