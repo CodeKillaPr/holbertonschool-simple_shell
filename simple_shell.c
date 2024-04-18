@@ -8,6 +8,10 @@ char *name;
  * Return: Always 0.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 int main(int argc, char *argv[])
 {
 	char *s = NULL;
@@ -20,7 +24,7 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		if (isatty(STDIN_FILENO) == 1)
-			write(1, "simple_shell ", 2);
+			write(1, "simple_shell ", 13);
 		file_stream = getline(&s, &buffer_size, stdin);
 		if (file_stream == -1)
 		{
@@ -40,6 +44,7 @@ int main(int argc, char *argv[])
 	s = NULL;
 	return (0);
 }
+
 /**
  * cmd_read - handles command line and tokenizes it
  *@s: string
