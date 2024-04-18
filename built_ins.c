@@ -36,10 +36,10 @@ int _str_n_cmp(char *s1, char *s2, int n)
 		c1 = *s1++;
 		c2 = *s2++;
 		if (c1 == '\0' || c1 != c2)
-/* compare at most, first n bytes of both strings */
+			/* compare at most, first n bytes of both strings */
 			return (c1 > c2 ? 1 : (c1 < c2 ? -1 : 0));
 	}
-				return (0);
+	return (0);
 }
 /**
  * _getenv - prints environment like getenv

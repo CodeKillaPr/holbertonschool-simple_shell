@@ -1,7 +1,7 @@
 #include "simple_shell.h"
 
 /**
- *_strcat(char *dest, char *src)- a function that concatenates two strings.
+ *_strcat - a function that concatenates two strings.
  *@dest: Char input
  *@src: Char input
  *
@@ -45,7 +45,7 @@ int _strcmp(char *s1, char *s2)
 }
 
 /**
- * char *_strcpy- Copies a string
+ * _strcpy - Copies a string
  *@dest: The new, coppied string
  *@src: The original string to copy
  *
@@ -67,7 +67,7 @@ char *_strcpy(char *dest, char *src)
 }
 
 /**
- * _strlen(char *s)- a function that returns the length of a string.
+ * _strlen - a function that returns the length of a string.
  *@s: Char
  *
  * Return: Always 0.

@@ -1,4 +1,5 @@
 #include "simple_shell.h"
+
 char *name;
 /**
  * main - print prompt, handle EOF, read file_stream
@@ -13,13 +14,13 @@ int main(int argc, char *argv[])
 	size_t buffer_size = 0;
 	ssize_t file_stream = 0;
 
-	(void) argc;
+	(void)argc;
 	name = argv[0];
 
 	while (1)
 	{
 		if (isatty(STDIN_FILENO) == 1)
-			write(1, "$ ", 2);
+			write(1, "simple_shell ", 2);
 		file_stream = getline(&s, &buffer_size, stdin);
 		if (file_stream == -1)
 		{
@@ -28,8 +29,8 @@ int main(int argc, char *argv[])
 			break;
 		}
 
-		if (s[file_stream - 1]  == '\n')
-			s[file_stream - 1]  = '\0';
+		if (s[file_stream - 1] == '\n')
+			s[file_stream - 1] = '\0';
 		if (*s == '\0')
 			continue;
 		if (cmd_read(s, file_stream) == 2)
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
  *@file_stream: getline input
  * Return: 0
  */
-int cmd_read(char *s, size_t __attribute__((unused))file_stream)
+int cmd_read(char *s, size_t __attribute__((unused)) file_stream)
 {
 	char *token = NULL;
 	char *cmd_arr[100];
@@ -62,7 +63,7 @@ int cmd_read(char *s, size_t __attribute__((unused))file_stream)
 		token = strtok(NULL, " ");
 	}
 	cmd_arr[i] = NULL;
-/* Return status code */
+	/* Return status code */
 	return (call_command(cmd_arr));
 }
 /**
