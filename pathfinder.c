@@ -42,7 +42,7 @@ char *pathfinder(char *cmd)
 	}
 	free(path);
 	free(new_path);
-	/* This is for after PATH checked and cmd is there locally */
+
 	if (stat(cmd, &buf) == 0)
 		return (_strdup(cmd));
 	return (NULL);

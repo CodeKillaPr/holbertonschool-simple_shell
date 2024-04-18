@@ -9,6 +9,10 @@
 #include <sys/stat.h>
 
 extern char **environ;
+#define MAX_INPUT_SIZE 1024
+#define MAX_CMD_SIZE 1024
+#define DELIM " \t\r\n\a"
+#define PROMPT "simple_shell "
 
 int _printenv(void);
 char *_strdup(char *string);
