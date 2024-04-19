@@ -1,6 +1,5 @@
 #include "simple_shell.h"
 
-char *name;
 /**
  * main - print prompt, handle EOF, read file_stream
  * @argc: arg count (not needed)
@@ -13,9 +12,9 @@ int main(int argc, char *argv[])
 	char *s = NULL;
 	size_t buffer_size = 0;
 	ssize_t file_stream = 0;
+	char *name = argv[0];
 
 	(void)argc;
-	name = argv[0];
 
 	while (1)
 	{
@@ -33,7 +32,7 @@ int main(int argc, char *argv[])
 			s[file_stream - 1] = '\0';
 		if (*s == '\0')
 			continue;
-		if (cmd_read(s, file_stream) == 2)
+		if (cmd_read(s, file_stream, name) == 2)
 			break;
 	}
 	free(s);
@@ -45,9 +44,10 @@ int main(int argc, char *argv[])
  * cmd_read - handles command line and tokenizes it
  *@s: string
  *@file_stream: getline input
+ *@name: name of the command
  * Return: 0
  */
-int cmd_read(char *s, size_t __attribute__((unused)) file_stream)
+int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 {
 	char *token = NULL;
 	char *cmd_arr[100];
@@ -55,11 +55,6 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream)
 
 	if (_strcmp(s, "exit") == 0)
 		return (2);
-	else
-	{
-		if (_strcmp(s, "exit") == 0)
-			exit(0);
-	}
 	if (_strcmp(s, "env") == 0)
 		return (_printenv());
 	token = strtok(s, " "), i = 0;
@@ -70,27 +65,31 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream)
 	}
 	cmd_arr[i] = NULL;
 	/* Return status code */
-	return (call_command(cmd_arr));
+	return (call_command(cmd_arr, name));
 }
+
 /**
  * print_not_found - prints when cmd is not found in path
  *
  * @cmd: a string provided by the stdin
+ * @name: name of the command
  */
-void print_not_found(char *cmd)
+void print_not_found(char *cmd, char *name)
 {
 	write(2, name, _strlen(name));
 	write(2, ": 1: ", 5);
 	write(2, cmd, _strlen(cmd));
 	write(2, ": not found\n", 12);
 }
+
 /**
  * call_command - calls cmd, forks, execve
  *
  * @cmd_arr: a string provided by the stdin
+ * @name: name of the command
  * Return: 0
  */
-int call_command(char *cmd_arr[])
+int call_command(char *cmd_arr[], char *name)
 {
 	char *exe_path_str = NULL;
 	char *cmd = NULL;
@@ -101,7 +100,7 @@ int call_command(char *cmd_arr[])
 	exe_path_str = pathfinder(cmd);
 	if (exe_path_str == NULL)
 	{
-		print_not_found(cmd);
+		print_not_found(cmd, name);
 		return (3);
 	}
 	is_child = fork();
