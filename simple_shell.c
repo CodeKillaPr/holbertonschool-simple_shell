@@ -53,7 +53,7 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 	char *cmd_arr[100];
 	int i;
 
-	token = strtok(s, " "), i = 0;
+	token = strtok(s, " \t"), i = 0;
 
 	while (token)
 	{
