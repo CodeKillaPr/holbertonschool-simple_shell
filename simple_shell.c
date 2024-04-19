@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 			s[file_stream - 1] = '\0';
 		if (*s == '\0')
 			continue;
-		if (cmd_read(s, file_stream, name) == 2)
+		if (cmd_read(s, file_stream, name) == 0)
 			break;
 	}
 	free(s);
@@ -62,7 +62,7 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 		token = strtok(NULL, " ");
 	}
 	if (_strcmp(cmd_arr[0], "exit") == 0)
-		exit(EXIT_SUCCESS);
+		return (0);
 	if (_strcmp(s, "env") == 0)
 		return (_printenv());
 
