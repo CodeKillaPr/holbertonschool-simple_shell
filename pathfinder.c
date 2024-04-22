@@ -7,37 +7,42 @@
  */
 char *pathfinder(char *cmd)
 {
-	char *path = _getenv("PATH");
-	char *path_copy = _strdup(path);
-	char *path_token = strtok(path_copy, ":");
-	struct stat buffer;
-	char *full_path = NULL;
-
-	if (cmd[0] == '/')
+	char *path = _strdup(_getenv("PATH"));
+	int i = 0, j = 0;
+	char *path_tokens = strtok(path, ":");
+	char *path_array[100];
+	char *s2 = cmd;
+	char *new_path = NULL;
+	struct stat buf;
+	new_path = malloc(sizeof(char) * 100);
+	if (_getenv("PATH")[0] == ':')
+		if (stat(cmd, &buf) == 0)
+			return (_strdup(cmd));
+	while (path_tokens != NULL)
 	{
-		if (stat(cmd, &buffer) == 0)
-			return _strdup(cmd);
+		path_array[i++] = path_tokens;
+		path_tokens = strtok(NULL, ":");
+	}
+	path_array[i] = NULL;
+	for (j = 0; path_array[j]; j++)
+	{
+		_strcpy(new_path, path_array[j]);
+		_strcat(new_path, "/");
+		_strcat(new_path, s2);
+		_strcat(new_path, "\0");
+
+		if (stat(new_path, &buf) == 0)
+		{
+			free(path);
+			return (new_path);
+		}
 		else
-			return NULL;
+			new_path[0] = 0;
 	}
-	while (path_token != NULL)
-	{
-		full_path = malloc(strlen(path_token) + strlen(cmd) + 2);
-		if (full_path == NULL)
-		{
-			perror("Error: ");
-			return NULL;
-		}
-		sprintf(full_path, "%s/%s", path_token, cmd);
+	free(path);
+	free(new_path);
 
-		if (stat(full_path, &buffer) == 0)
-		{
-			free(path_copy);
-			return full_path;
-		}
-		free(full_path);
-		path_token = strtok(NULL, ":");
-	}
-	free(path_copy);
-	return NULL;
+	if (stat(cmd, &buf) == 0)
+		return (_strdup(cmd));
+	return (NULL);
 }
