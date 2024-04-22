@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	char *s = NULL;
 	size_t buffer_size = 0;
 	ssize_t file_stream = 0;
-	char *name = argv[2];
+	char *name = argv[0];
 
 	(void)argc;
 
