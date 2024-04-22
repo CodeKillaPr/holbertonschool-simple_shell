@@ -75,13 +75,13 @@ char *_strcpy(char *dest, char *src)
 
 int _strlen(char *s)
 {
-	int i = 0;
+	int length = 0;
 
-	while (s[i] != '\0')
+	while (s[length] != '\0')
 	{
-		i++;
+		length++;
 	}
-	return (i);
+	return (length);
 }
 
 /**

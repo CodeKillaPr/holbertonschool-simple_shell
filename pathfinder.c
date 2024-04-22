@@ -14,6 +14,7 @@ char *pathfinder(char *cmd)
 	char *s2 = cmd;
 	char *new_path = NULL;
 	struct stat buf;
+
 	new_path = malloc(sizeof(char) * 100);
 	if (_getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0)
