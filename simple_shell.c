@@ -74,7 +74,7 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  * @cmd: a string provided by the stdin
  * @name: name of the command
  */
-void print_not_found(char __attribute__((unused)) * cmd, char __attribute__((unused)) * name)
+void print_not_found(char *cmd, char *name)
 {
 	write(2, name, _strlen(name));
 	write(2, ": ", 2);
