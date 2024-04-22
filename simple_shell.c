@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		if (*s == '\0')
 			continue;
 		if (cmd_read(s, file_stream, name) == 2)
-			break;
+			exit(EXIT_FAILURE);
 	}
 	free(s);
 	s = NULL;
