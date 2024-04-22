@@ -37,6 +37,7 @@ char *pathfinder(char *cmd)
 			free(path);
 			return (new_path);
 		}
+
 		else
 			new_path[0] = 0;
 	}
