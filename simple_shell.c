@@ -74,12 +74,13 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  * @cmd: a string provided by the stdin
  * @name: name of the command
  */
-void print_not_found(char *cmd, char *name)
+void print_not_found(char __attribute__((unused)) * cmd, char __attribute__((unused)) * name)
 {
 	write(2, name, _strlen(name));
-	write(2, ": 1: ", 5);
+	write(2, ": ", 2);
+	write(2, "no such file or directory: ", 27);
 	write(2, cmd, _strlen(cmd));
-	write(2, ": not found\n", 12);
+	write(2, "\n", 1);
 }
 
 /**
