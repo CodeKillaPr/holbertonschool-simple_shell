@@ -30,7 +30,7 @@ char *pathfinder(char *cmd)
 		_strcpy(new_path, path_array[j]);
 		_strcat(new_path, "/");
 		_strcat(new_path, s2);
-		_strcat(new_path, "\0");
+		new_path[_strlen(new_path)] = '\0';
 
 		if (stat(new_path, &buf) == 0)
 		{
