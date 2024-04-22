@@ -27,9 +27,6 @@ char *pathfinder(char *cmd)
 	path_array[i] = NULL;
 	for (j = 0; path_array[j]; j++)
 	{
-		if (_strcmp(cmd, "/bin/ls") == 0)
-			return "/bin/ls";
-
 		_strcpy(new_path, path_array[j]);
 		_strcat(new_path, "/");
 		_strcat(new_path, s2);
