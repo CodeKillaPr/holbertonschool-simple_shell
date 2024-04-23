@@ -59,10 +59,10 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 	if (s == NULL)
 		return (0);
 
-	if (_strcmp(s, "exit") == 0)
+	if (strcmp(s, "exit") == 0)
 		return (2);
 
-	if (_strcmp(s, "env") == 0)
+	if (strcmp(s, "env") == 0)
 		return (_printenv());
 
 	token = strtok(s, " "), i = 0;
@@ -86,10 +86,10 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  */
 void print_not_found(char *cmd, char *name)
 {
-	write(2, name, _strlen(name));
+	write(2, name, strlen(name));
 	write(2, ": ", 2);
 	write(2, "no such file or directory: ", 27);
-	write(2, cmd, _strlen(cmd));
+	write(2, cmd, strlen(cmd));
 	write(2, "\n", 1);
 }
 

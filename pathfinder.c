@@ -7,7 +7,7 @@
  */
 char *pathfinder(char *cmd)
 {
-	char *path = _strdup(_getenv("PATH"));
+	char *path = strdup(getenv("PATH"));
 	int i = 0, j = 0;
 	char *path_tokens = strtok(path, ":");
 	char *path_array[100];
@@ -16,9 +16,9 @@ char *pathfinder(char *cmd)
 	struct stat buf;
 
 	new_path = malloc(sizeof(char) * 100);
-	if (_getenv("PATH")[0] == ':')
+	if (getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0)
-			return (_strdup(cmd));
+			return (strdup(cmd));
 	while (path_tokens != NULL)
 	{
 		path_array[i++] = path_tokens;
@@ -27,10 +27,10 @@ char *pathfinder(char *cmd)
 	path_array[i] = NULL;
 	for (j = 0; path_array[j]; j++)
 	{
-		_strcpy(new_path, path_array[j]);
-		_strcat(new_path, "/");
-		_strcat(new_path, s2);
-		_strcat(new_path, "\0");
+		strcpy(new_path, path_array[j]);
+		strcat(new_path, "/");
+		strcat(new_path, s2);
+		strcat(new_path, "\0");
 
 		if (stat(new_path, &buf) == 0)
 		{
@@ -45,6 +45,6 @@ char *pathfinder(char *cmd)
 	free(new_path);
 
 	if (stat(cmd, &buf) == 0)
-		return (_strdup(cmd));
+		return (strdup(cmd));
 	return (NULL);
 }
