@@ -15,7 +15,7 @@ int _printenv(void)
 		write(1, "\n", 1);
 		s = environ[++i];
 	}
-	return (0);
+	return (2);
 }
 
 /**
