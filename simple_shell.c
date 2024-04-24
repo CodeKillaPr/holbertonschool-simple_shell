@@ -114,6 +114,7 @@ int call_command(char *cmd_arr[], char *name)
 		print_not_found(cmd, name);
 		return (3);
 	}
+
 	is_child = fork();
 	if (is_child < 0)
 	{
@@ -126,9 +127,11 @@ int call_command(char *cmd_arr[], char *name)
 	}
 	else if (is_child == 0)
 	{
-		(execve(exe_path_str, cmd_arr, environ));
-		perror("Error:");
-		exit(1);
+		if (execvp(cmd_arr[0], cmd_arr) == -1)
+		{
+			perror("Error:");
+			exit(1);
+		}
 	}
 	free(exe_path_str);
 	return (0);
