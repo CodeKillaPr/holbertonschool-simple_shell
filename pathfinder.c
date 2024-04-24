@@ -39,7 +39,7 @@ char *pathfinder(char *cmd)
 		}
 
 		else
-			new_path[0] = 0;
+			new_path = strdup(s2);
 	}
 	free(path);
 	free(new_path);
