@@ -86,11 +86,7 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  */
 void print_not_found(char *cmd, char *name)
 {
-	write(2, name, strlen(name));
-	write(2, ": ", 2);
-	write(2, "no such file or directory: ", 27);
-	write(2, cmd, strlen(cmd));
-	write(2, "\n", 1);
+	fprintf(stderr, "%s: %s: command not found\n", name, cmd);
 }
 
 /**
