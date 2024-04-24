@@ -17,13 +17,6 @@ char *pathfinder(char *cmd)
 	struct stat buf;
 
 	chdir(getenv("/bin"));
-	if (chdir("/bin") == -1)
-	{
-		perror("chdir");
-		free(path);
-		free(new_path);
-		return NULL;
-	}
 
 	new_path = malloc(sizeof(char) * 100);
 	if (getenv("PATH")[0] == ':')
