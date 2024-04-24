@@ -99,17 +99,43 @@ void print_not_found(char *cmd, char *name)
 int call_command(char *cmd_arr[], char *name)
 {
 	char *exe_path_str = NULL;
-	char *cmd = NULL;
-	pid_t is_child;
-	int status;
+	char *cmd = cmd_arr[0];
+	struct stat buf;
 
-	cmd = cmd_arr[0];
+	if (cmd[0] == '/' || strncmp(cmd, "./", 2) == 0)
+	{
+		if (stat(cmd, &buf) == 0)
+		{
+			return execute_command(cmd_arr, name);
+		}
+		else
+		{
+			print_not_found(cmd, name);
+			return 3;
+		}
+	}
+
 	exe_path_str = pathfinder(cmd);
 	if (exe_path_str == NULL)
 	{
 		print_not_found(cmd, name);
-		return (3);
+		return 3;
 	}
+
+	return execute_command(cmd_arr, name);
+}
+
+/**
+ * execute_command - executes the command
+ *
+ * @cmd_arr: a string provided by the stdin
+ * @name: name of the command
+ * Return: 0
+ */
+int execute_command(char *cmd_arr[], char *name)
+{
+	pid_t is_child;
+	int status;
 
 	is_child = fork();
 	if (is_child < 0)
@@ -123,12 +149,11 @@ int call_command(char *cmd_arr[], char *name)
 	}
 	else if (is_child == 0)
 	{
-		if (execvp(cmd_arr[0], cmd_arr) == -1)
+		execve(cmd_arr[0], cmd_arr, environ);
 		{
-			perror("Error:");
+			perror(name);
 			exit(1);
 		}
 	}
-	free(exe_path_str);
-	return (0);
+	return 0;
 }
