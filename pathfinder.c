@@ -2,12 +2,10 @@
 /**
  * pathfinder - Takes PATH string, tokenizes it, then concats with "/" & cmd
  * @cmd: command passed from getline in main
- *
  * Return: new_path for use in cmd_read
  */
 char *pathfinder(char *cmd)
 {
-
 	char *path = strdup(getenv("PATH"));
 	int i = 0, j = 0;
 	char *path_tokens = strtok(path, ":");
@@ -17,7 +15,6 @@ char *pathfinder(char *cmd)
 	struct stat buf;
 
 	chdir(getenv("/bin"));
-
 	new_path = malloc(sizeof(char) * 100);
 	if (getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0)
@@ -34,20 +31,19 @@ char *pathfinder(char *cmd)
 		strcat(new_path, "/");
 		strcat(new_path, s2);
 		strcat(new_path, "\0");
-
 		if (stat(new_path, &buf) == 0)
 		{
 			free(path);
 			return (new_path);
 		}
-
 		else
 			new_path[0] = 0;
 	}
 	free(path);
-	free(new_path);
-
 	if (stat(cmd, &buf) == 0)
+	{
 		return (strdup(cmd));
+	}
+	free(new_path);
 	return (NULL);
 }

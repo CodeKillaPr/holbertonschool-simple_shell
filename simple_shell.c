@@ -59,18 +59,19 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 	if (s == NULL)
 		return (0);
 
-	if (strcmp(s, "exit") == 0)
-		return (2);
-
-	if (strcmp(s, "env") == 0)
-		return (_printenv());
-
 	token = strtok(s, " "), i = 0;
 	while (token)
 	{
 		cmd_arr[i++] = token;
 		token = strtok(NULL, " ");
 	}
+
+	if (strcmp(s, "exit") == 0)
+		return (2);
+
+	if (strcmp(s, "env") == 0)
+		return (_printenv());
+
 	if (i == 0)
 		return (0);
 
