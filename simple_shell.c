@@ -108,26 +108,27 @@ int call_command(char *cmd_arr[], char *name)
 	int status;
 
 	cmd = cmd_arr[0];
-	if (cmd[0] == '/')
-		exe_path_str = cmd;
-	else
-		exe_path_str = pathfinder(cmd);
+	exe_path_str = pathfinder(cmd);
 	if (exe_path_str == NULL)
+	{
 		print_not_found(cmd, name);
-	return (3);
+		return (3);
+	}
 	is_child = fork();
 	if (is_child < 0)
+	{
 		perror("Error:");
-	return (-1);
+		return (-1);
+	}
 	if (is_child > 0)
+	{
 		wait(&status);
+	}
 	else if (is_child == 0)
 	{
-		if (execve(exe_path_str, cmd_arr, environ) == -1)
-		{
-			perror("Error:");
-			exit(1);
-		}
+		(execve(exe_path_str, cmd_arr, environ));
+		perror("Error:");
+		exit(1);
 	}
 	free(exe_path_str);
 	return (0);
