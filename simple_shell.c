@@ -86,10 +86,14 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  */
 void print_not_found(char *cmd, char *name)
 {
-	write(2, name, _strlen(name));
-	write(2, ":", 2);
-	write(2, cmd, strlen(cmd));
-	write(2, "\n", 1);
+	if (strcmp(_getenv("PATH"), "") == 0)
+	{
+		fprintf(stderr, "%s: %s: not found\n", name, cmd);
+	}
+	else
+	{
+		fprintf(stderr, "%s: %s: command not found\n", name, cmd);
+	}
 }
 
 /**
