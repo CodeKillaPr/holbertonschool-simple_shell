@@ -86,11 +86,7 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  */
 void print_not_found(char *cmd, char *name)
 {
-	write(2, name, strlen(name));
-	write(2, ": ", 2);
-	write(2, "no such file or directory: ", 27);
-	write(2, cmd, strlen(cmd));
-	write(2, "\n", 1);
+	fprintf(stderr, "%s: %s: command not found\n", name, cmd);
 }
 
 /**
@@ -102,18 +98,49 @@ void print_not_found(char *cmd, char *name)
  */
 int call_command(char *cmd_arr[], char *name)
 {
+	char *cmd = cmd_arr[0];
+	struct stat buf;
 	char *exe_path_str = NULL;
-	char *cmd = NULL;
-	pid_t is_child;
-	int status;
+	int result;
 
-	cmd = cmd_arr[0];
+	if (cmd[0] == '/' || strncmp(cmd, "./", 2) == 0 ||
+		strcmp(_getenv("PATH"), "") == 0)
+	{
+		if (stat(cmd, &buf) == 0)
+		{
+			result = execute_command(cmd_arr, name);
+			return result;
+		}
+		else
+		{
+			print_not_found(cmd, name);
+			return (3);
+		}
+	}
+
 	exe_path_str = pathfinder(cmd);
 	if (exe_path_str == NULL)
 	{
 		print_not_found(cmd, name);
 		return (3);
 	}
+
+	cmd_arr[0] = exe_path_str;
+	result = execute_command(cmd_arr, name);
+	free(exe_path_str);
+	return result;
+}
+/**
+ * execute_command - executes the command
+ *
+ * @cmd_arr: a string provided by the stdin
+ * @name: name of the command
+ * Return: 0
+ */
+int execute_command(char *cmd_arr[], char *name)
+{
+	pid_t is_child;
+	int status;
 
 	is_child = fork();
 	if (is_child < 0)
@@ -127,12 +154,11 @@ int call_command(char *cmd_arr[], char *name)
 	}
 	else if (is_child == 0)
 	{
-		if (execvp(cmd_arr[0], cmd_arr) == -1)
+		execve(cmd_arr[0], cmd_arr, environ);
 		{
-			perror("Error:");
+			perror(name);
 			exit(1);
 		}
 	}
-	free(exe_path_str);
 	return (0);
 }
