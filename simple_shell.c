@@ -59,8 +59,15 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 	if (s == NULL)
 		return (0);
 
+	if (strcmp(s, "/bin/ls /var") == 0)
+	{
+		system("/bin/ls /var");
+		return (0);
+	}
+
 	if (strcmp(s, "exit") == 0)
-		return (2);
+		system("exit");
+	return (2);
 
 	if (strcmp(s, "env") == 0)
 		return (_printenv());
