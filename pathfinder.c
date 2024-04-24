@@ -14,7 +14,6 @@ char *pathfinder(char *cmd)
 	char *new_path = NULL;
 	struct stat buf;
 
-	chdir(getenv("/bin"));
 	new_path = malloc(sizeof(char) * 100);
 	if (getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0)
