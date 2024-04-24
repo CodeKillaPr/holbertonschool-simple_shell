@@ -17,7 +17,10 @@ char *pathfinder(char *cmd)
 	new_path = malloc(sizeof(char) * 100);
 	if (_getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0)
+		{
+			free(path);
 			return (strdup(cmd));
+		}
 	while (path_tokens != NULL)
 	{
 		path_array[i++] = path_tokens;
@@ -39,10 +42,6 @@ char *pathfinder(char *cmd)
 			new_path[0] = 0;
 	}
 	free(path);
-	if (stat(cmd, &buf) == 0)
-	{
-		return (strdup(cmd));
-	}
 	free(new_path);
 	return (NULL);
 }

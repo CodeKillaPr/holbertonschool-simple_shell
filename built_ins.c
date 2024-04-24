@@ -49,15 +49,12 @@ int _str_n_cmp(char *s1, char *s2, int n)
  */
 char *_getenv(char *var)
 {
-	char *s = environ[0];
 	int i = 0;
-	int len = strlen(var);
 
-	while (s)
+	for (i = 0; environ[i]; i++)
 	{
-		if (_str_n_cmp(s, var, len) == 0 && s[len] == '=')
-			return (s + len + 1);
-		s = environ[++i];
+		if (_str_n_cmp(environ[i], var, strlen(var)) == 0)
+			return (&environ[i][strlen(var)]);
 	}
 	return (NULL);
 }
