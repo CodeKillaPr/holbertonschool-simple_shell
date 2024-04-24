@@ -98,31 +98,36 @@ void print_not_found(char *cmd, char *name)
  */
 int call_command(char *cmd_arr[], char *name)
 {
-	char *exe_path_str = NULL;
 	char *cmd = cmd_arr[0];
 	struct stat buf;
-
-	exe_path_str = pathfinder(cmd);
-	if (exe_path_str == NULL)
-	{
-		print_not_found(cmd, name);
-		return 3;
-	}
+	char *exe_path_str = NULL;
+	int result;
 
 	if (cmd[0] == '/' || strncmp(cmd, "./", 2) == 0)
 	{
 		if (stat(cmd, &buf) == 0)
 		{
-			return execute_command(cmd_arr, name);
+			result = execute_command(cmd_arr, name);
+			return result;
 		}
 		else
 		{
 			print_not_found(cmd, name);
-			return 3;
+			return (3);
 		}
 	}
 
-	return execute_command(cmd_arr, name);
+	exe_path_str = pathfinder(cmd);
+	if (exe_path_str == NULL)
+	{
+		print_not_found(cmd, name);
+		return (3);
+	}
+
+	cmd_arr[0] = exe_path_str;
+	result = execute_command(cmd_arr, name);
+	free(exe_path_str);
+	return result;
 }
 
 /**
