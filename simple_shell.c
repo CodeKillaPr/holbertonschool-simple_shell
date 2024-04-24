@@ -103,12 +103,13 @@ int call_command(char *cmd_arr[], char *name)
 	char *exe_path_str = NULL;
 	int result;
 
-	if (cmd[0] == '/' || strncmp(cmd, "./", 2) == 0)
+	if (cmd[0] == '/' || strncmp(cmd, "./", 2) == 0 ||
+		strcmp(_getenv("PATH"), "") == 0)
 	{
 		if (stat(cmd, &buf) == 0)
 		{
 			result = execute_command(cmd_arr, name);
-			return result;
+			return (result);
 		}
 		else
 		{
@@ -127,7 +128,7 @@ int call_command(char *cmd_arr[], char *name)
 	cmd_arr[0] = exe_path_str;
 	result = execute_command(cmd_arr, name);
 	free(exe_path_str);
-	return result;
+	return (result);
 }
 
 /**
@@ -160,5 +161,5 @@ int execute_command(char *cmd_arr[], char *name)
 			exit(1);
 		}
 	}
-	return 0;
+	return (0);
 }
