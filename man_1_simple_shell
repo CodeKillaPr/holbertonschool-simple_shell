@@ -1,16 +1,21 @@
 .TH simple_shell "2024-04-23" "version 1.0" "User Manuals"
+
 .SH NAME
 simple_shell \- simple shell interface to execute commands.
+
 .SH SYNOPSIS
 .B simple_shell
 .RI [option] ...
+
 .SH DESCRIPTION
 simple_shell is a simple UNIX command interpreter written in C that replicates functionalities of the sh (Bourne Shell). It can execute commands read from the standard input or from a file.
+
 .SH OPTIONS
 There are no options available for simple_shell. All interactions are handled interactively or non-interactively through standard input.
+
 .SH FEATURES
 .TP
-.BI Prompt
+:.BI Prompt
 Displays "simple_shell " when ready to accept a command in interactive mode.
 .TP
 .BI Command execution
@@ -40,7 +45,8 @@ You can also redirect input from a file:
 $ ./simple_shell < script_file
 .fi
 .SH AUTHORS
-Written by Anto and the Simple Shell team.
+Written by Nelson Betancourt <nelsonba787@gmail.com
+Ramon Antonio Vega <antovega@me.com>
 .SH SEE ALSO
 .BR sh (1),
 .BR bash (1)
