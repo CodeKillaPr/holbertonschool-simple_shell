@@ -66,8 +66,7 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
 	}
 
 	if (strcmp(s, "exit") == 0)
-		system("exit");
-	return (2);
+		return (2);
 
 	if (strcmp(s, "env") == 0)
 		return (_printenv());
