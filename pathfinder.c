@@ -30,7 +30,6 @@ char *pathfinder(char *cmd)
 		strcpy(new_path, path_array[j]);
 		strcat(new_path, "/");
 		strcat(new_path, s2);
-		strcat(new_path, "\0");
 
 		if (stat(new_path, &buf) == 0)
 		{
