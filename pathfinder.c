@@ -47,3 +47,40 @@ char *pathfinder(char *cmd)
 		return (strdup(cmd));
 	return (NULL);
 }
+
+/**
+ * print_not_found - when path is null
+ * @cmd: command passed from getline in main
+ * Return: NULL
+ */
+char *path_not_find(char *cmd)
+{
+	char *path = NULL;
+	char *new_path = NULL;
+	struct stat buf;
+
+	path = _getenv("PATH");
+	if (path == NULL)
+	{
+		if (stat(cmd, &buf) == 0)
+		{
+			new_path = strdup(cmd);
+			return (new_path);
+		}
+		else
+		{
+			write(1, "simple_shell: 1: ", 17);
+			write(1, cmd, strlen(cmd));
+			write(1, ": not found\n", 12);
+			return (NULL);
+		}
+	}
+	if (stat(path, &buf) == 0)
+	{
+		new_path = strdup(path);
+		free(path);
+		return (new_path);
+	}
+	free(path);
+	return (NULL);
+}
