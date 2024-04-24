@@ -6,7 +6,7 @@
  */
 char *pathfinder(char *cmd)
 {
-	char *path = strdup(getenv("PATH"));
+	char *path = strdup(_getenv("PATH"));
 	int i = 0, j = 0;
 	char *path_tokens = strtok(path, ":");
 	char *path_array[100];
@@ -15,7 +15,7 @@ char *pathfinder(char *cmd)
 	struct stat buf;
 
 	new_path = malloc(sizeof(char) * 100);
-	if (getenv("PATH")[0] == ':')
+	if (_getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0)
 			return (strdup(cmd));
 	while (path_tokens != NULL)

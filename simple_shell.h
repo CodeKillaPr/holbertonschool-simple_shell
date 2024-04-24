@@ -20,5 +20,6 @@ char *pathfinder(char *cmd);
 void print_not_found(char *cmd, char *name);
 int call_command(char *cmd_arr[], char *name);
 int _str_n_cmp(char *s1, char *s2, int n);
+char *_getenv(char *var);
 
 #endif /* SIMPLE_SHELL_H */

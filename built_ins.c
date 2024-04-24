@@ -41,3 +41,23 @@ int _str_n_cmp(char *s1, char *s2, int n)
 	}
 	return (0);
 }
+
+/**
+ * _getenv - gets the value of the environment variable name
+ * @var: name of the environment variable
+ * Return: the value of the environment variable
+ */
+char *_getenv(char *var)
+{
+	char *s = environ[0];
+	int i = 0;
+	int len = strlen(var);
+
+	while (s)
+	{
+		if (_str_n_cmp(s, var, len) == 0 && s[len] == '=')
+			return (s + len + 1);
+		s = environ[++i];
+	}
+	return (NULL);
+}
