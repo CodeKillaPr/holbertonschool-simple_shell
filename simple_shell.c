@@ -86,7 +86,10 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
  */
 void print_not_found(char *cmd, char *name)
 {
-	fprintf(stderr, "%s: %s: command not found\n", name, cmd);
+	write(2, name, _strlen(name));
+	write(2, ":", 2);
+	write(2, cmd, strlen(cmd));
+	write(2, "\n", 1);
 }
 
 /**
@@ -109,7 +112,7 @@ int call_command(char *cmd_arr[], char *name)
 		if (stat(cmd, &buf) == 0)
 		{
 			result = execute_command(cmd_arr, name);
-			return result;
+			return (result);
 		}
 		else
 		{
@@ -128,7 +131,7 @@ int call_command(char *cmd_arr[], char *name)
 	cmd_arr[0] = exe_path_str;
 	result = execute_command(cmd_arr, name);
 	free(exe_path_str);
-	return result;
+	return (result);
 }
 /**
  * execute_command - executes the command
