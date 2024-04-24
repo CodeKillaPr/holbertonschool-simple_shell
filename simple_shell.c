@@ -109,7 +109,7 @@ int call_command(char *cmd_arr[], char *name)
 		if (stat(cmd, &buf) == 0)
 		{
 			result = execute_command(cmd_arr, name);
-			return (result);
+			return result;
 		}
 		else
 		{
@@ -128,9 +128,8 @@ int call_command(char *cmd_arr[], char *name)
 	cmd_arr[0] = exe_path_str;
 	result = execute_command(cmd_arr, name);
 	free(exe_path_str);
-	return (result);
+	return result;
 }
-
 /**
  * execute_command - executes the command
  *
