@@ -102,6 +102,13 @@ int call_command(char *cmd_arr[], char *name)
 	char *cmd = cmd_arr[0];
 	struct stat buf;
 
+	exe_path_str = pathfinder(cmd);
+	if (exe_path_str == NULL)
+	{
+		print_not_found(cmd, name);
+		return 3;
+	}
+
 	if (cmd[0] == '/' || strncmp(cmd, "./", 2) == 0)
 	{
 		if (stat(cmd, &buf) == 0)
@@ -113,13 +120,6 @@ int call_command(char *cmd_arr[], char *name)
 			print_not_found(cmd, name);
 			return 3;
 		}
-	}
-
-	exe_path_str = pathfinder(cmd);
-	if (exe_path_str == NULL)
-	{
-		print_not_found(cmd, name);
-		return 3;
 	}
 
 	return execute_command(cmd_arr, name);
