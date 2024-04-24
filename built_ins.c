@@ -11,7 +11,7 @@ int _printenv(void)
 
 	while (s)
 	{
-		write(1, s, _strlen(s));
+		write(1, s, strlen(s));
 		write(1, "\n", 1);
 		s = environ[++i];
 	}
@@ -41,11 +41,11 @@ int _str_n_cmp(char *s1, char *s2, int n)
 	}
 	return (0);
 }
+
 /**
- * _getenv - prints environment like getenv
- * @var: environ variable
- *
- * Return: 0
+ * _getenv - gets the value of the environment variable name
+ * @var: name of the environment variable
+ * Return: the value of the environment variable
  */
 char *_getenv(char *var)
 {
@@ -53,8 +53,8 @@ char *_getenv(char *var)
 
 	for (i = 0; environ[i]; i++)
 	{
-		if (_str_n_cmp(environ[i], var, _strlen(var)) == 0)
-			return (&environ[i][_strlen(var)]);
+		if (_str_n_cmp(environ[i], var, strlen(var)) == 0)
+			return (&environ[i][strlen(var)]);
 	}
 	return (NULL);
 }

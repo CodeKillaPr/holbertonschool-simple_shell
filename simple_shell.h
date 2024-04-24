@@ -15,16 +15,11 @@ extern char **environ;
 #define PROMPT "simple_shell "
 
 int _printenv(void);
-char *_strdup(char *string);
 int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name);
 char *pathfinder(char *cmd);
-char *_strcat(char *dest, char *src);
-int _strcmp(char *s1, char *s2);
-char *_strcpy(char *dest, char *src);
-int _strlen(char *s);
 void print_not_found(char *cmd, char *name);
 int call_command(char *cmd_arr[], char *name);
-char *_getenv(char *var);
 int _str_n_cmp(char *s1, char *s2, int n);
+char *_getenv(char *var);
 
 #endif /* SIMPLE_SHELL_H */
