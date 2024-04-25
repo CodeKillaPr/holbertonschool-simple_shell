@@ -1,13 +1,18 @@
 # simple_shell
 
 ## Introduction
+
 `simple_shell` is a simple UNIX command line interpreter that mimics basic functionality of traditional shells like `sh` and `bash`. This project is part of a learning exercise to understand the workings of shells and UNIX processes. `simple_shell` reads commands from the standard input or from a script file and executes them.
 
 ## Installation
+
 To install `simple_shell`, clone this repository to your local machine and compile the sources using GCC.
 
 ```bash
-git clone https://github.com/yourusername/simple_shell.git
+git clone git@github.com:unknowguy404/holbertonschool-simple_shell.git
+```
+
+```bash
 cd simple_shell
 gcc -Wall -Werror -Wextra -pedantic *.c -o simple_shell
 
@@ -38,3 +43,4 @@ When contributing to this repository, please first discuss the change you wish t
 Authors:
 Nelson Betancourt Aponte <github.com/unknowguy404>
 Ramon Antonio Vega <github.com/rvdmntry>
+```
