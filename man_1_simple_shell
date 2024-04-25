@@ -1,52 +1,62 @@
-.TH simple_shell "2024-04-23" "version 1.0" "User Manuals"
+NAME
+    simple_shell - a simple UNIX command interpreter
 
-.SH NAME
-simple_shell \- simple shell interface to execute commands.
+SYNOPSIS
+    simple_shell [OPTION]...
 
-.SH SYNOPSIS
-.B simple_shell
-.RI [option] ...
+DESCRIPTION
+    simple_shell is a simple UNIX command interpreter that reads commands from
+    either standard input (stdin) or a file and executes them.
 
-.SH DESCRIPTION
-simple_shell is a simple UNIX command interpreter written in C that replicates functionalities of the sh (Bourne Shell). It can execute commands read from the standard input or from a file.
+    - Invokes an interactive shell or a batch shell depending on the input mode.
+    - Supports built-in commands and utilizes the PATH environment variable to find executables.
+    - Implements basic features like command execution, environmental variable expansion, and the ability to run programs from the filesystem.
 
-.SH OPTIONS
-There are no options available for simple_shell. All interactions are handled interactively or non-interactively through standard input.
+FUNCTIONS
+    int main(int argc, char *argv[])
+        Starts the shell and handles command line arguments.
 
-.SH FEATURES
-.TP
-:.BI Prompt
-Displays "simple_shell " when ready to accept a command in interactive mode.
-.TP
-.BI Command execution
-Executes commands entered by the user or read from a script.
-.TP
-.BI Built-in commands:
-The shell supports the following built-in commands:
-.TP
-.BI "env"
-Prints the current environment variables.
-.TP
-.BI "exit"
-Exits the shell.
-.TP
-.BI Path handling
-Automatically resolves commands using the PATH environment variable.
-.TP
-.BI Error handling
-Prints relevant errors to stderr if commands fail to execute or are not found.
-.SH USAGE
-To start the shell in interactive mode, just type:
-.nf
-$ ./simple_shell
-.fi
-You can also redirect input from a file:
-.nf
-$ ./simple_shell < script_file
-.fi
-.SH AUTHORS
-Written by Nelson Betancourt <nelsonba787@gmail.com
-Ramon Antonio Vega <antovega@me.com>
-.SH SEE ALSO
-.BR sh (1),
-.BR bash (1)
+    int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name)
+        Reads and parses commands from input, then dispatches them for execution.
+
+    void print_not_found(char *cmd, char *name)
+        Prints an error message if the command is not found in the PATH.
+
+    int call_command(char *cmd_arr[], char *name)
+        Handles the execution of commands including path resolution and forking processes.
+
+    int execute_command(char *cmd_arr[], char *name)
+        Executes the command using execve after forking the process.
+
+    char *pathfinder(char *cmd)
+        Resolves paths for executables from the PATH environment variable.
+
+    int _printenv(void)
+        Prints the current environment variables.
+
+    int _str_n_cmp(char *s1, char *s2, int n)
+        Compares up to n characters of two strings.
+
+    char *_getenv(char *var)
+        Retrieves the value of an environment variable.
+
+EXAMPLES
+    Running the shell interactively:
+        $ ./simple_shell
+        simple_shell $ ls -l
+        total 0
+        -rw-r--r--  1 user  staff  0 Apr 25 12:00 file.txt
+
+    Running a single command:
+        $ echo "echo hello" | ./simple_shell
+        hello
+
+    Exiting the shell:
+        simple_shell $ exit
+
+AUTHOR
+    Written by Nelson Betancourt <nelsonba787@gmail.com
+    Ramon Antonio Vega <antovega@me.com>
+
+SEE ALSO
+    sh(1), bash(1), dash(1), execve(2), fork(2), wait(2)
