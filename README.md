@@ -13,7 +13,7 @@ git clone git@github.com:unknowguy404/holbertonschool-simple_shell.git
 ```
 
 ```bash
-cd simple_shell
+cd holbertonschool-simple_shell
 gcc -Wall -Werror -Wextra -pedantic *.c -o simple_shell
 
 Usage
