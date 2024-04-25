@@ -12,6 +12,8 @@ To install `simple_shell`, clone this repository to your local machine and compi
 git clone git@github.com:unknowguy404/holbertonschool-simple_shell.git
 ```
 
+## Compilation
+
 ```bash
 cd holbertonschool-simple_shell
 gcc -Wall -Werror -Wextra -pedantic *.c -o simple_shell
