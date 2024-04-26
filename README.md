@@ -62,11 +62,11 @@ total 128
 -rwxr-xr-x 1 killa staff 654 Apr 26 00:32 simple_shell.h
 simple_shell exit
 ➜ holbertonschool-simple_shell git:(Nelson) ✗ echo "/bin/ls /var" | ./simple_shell
-MobileSoftwareUpdate backups empty log netboot run vm
-OOPJit containers folders logs networkd select yp
-agentx db install ma protected sntpd
-at dextcores jabberd mail root spool
-audit dirs_cleaner lib msgs rpc tmp
+MobileSoftwareUpdate	backups			empty			log			netboot			run			vm
+OOPJit			containers		folders			logs			networkd		select			yp
+agentx			db			install			ma			protected		sntpd
+at			dextcores		jabberd			mail			root			spool
+audit			dirs_cleaner		lib			msgs			rpc			tmp
 
 ```
 
