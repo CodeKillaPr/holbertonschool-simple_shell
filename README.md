@@ -44,9 +44,6 @@ Contributions are welcome! If you'd like to contribute, please fork the reposito
 ## Example
 
 ```bash
-
-```
-
 holbertonschool-simple_shell git:(Nelson) ✗ ./simple_shell
 simple_shell ls
 AUTHORS built_ins.c pathfinder.c simple_shell.c
@@ -70,6 +67,8 @@ OOPJit containers folders logs networkd select yp
 agentx db install ma protected sntpd
 at dextcores jabberd mail root spool
 audit dirs_cleaner lib msgs rpc tmp
+
+```
 
 ```bash
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
