@@ -45,8 +45,14 @@ EXAMPLES
         -rw-r--r--  1 user  staff  0 Apr 25 12:00 file.txt
 
     Running a single command:
-        $ echo "echo hello" | ./simple_shell
-        hello
+        $ echo "/bin/ls /var" | ./simple_shell
+		MobileSoftwareUpdate    db                      lib                     networkd                spool
+		OOPJit                  dextcores               log                     protected               tmp
+		agentx                  dirs_cleaner            logs                    root                    vm
+		at                      empty                   ma                      rpc                     yp
+		audit                   folders                 mail                    run
+		backups                 install                 msgs                    select
+		containers              jabberd                 netboot                 sntpd
 
     Exiting the shell:
         simple_shell $ exit
