@@ -34,9 +34,6 @@ FUNCTIONS
     int _printenv(void)
         Prints the current environment variables.
 
-    int _str_n_cmp(char *s1, char *s2, int n)
-        Compares up to n characters of two strings.
-
     char *_getenv(char *var)
         Retrieves the value of an environment variable.
 
