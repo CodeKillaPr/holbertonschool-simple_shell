@@ -19,7 +19,6 @@ int cmd_read(char *s, size_t __attribute__((unused)) file_stream, char *name);
 char *pathfinder(char *cmd);
 void print_not_found(char *cmd, char *name);
 int call_command(char *cmd_arr[], char *name);
-int _str_n_cmp(char *s1, char *s2, int n);
 char *_getenv(char *var);
 int execute_command(char *cmd_arr[], char *name);
 
